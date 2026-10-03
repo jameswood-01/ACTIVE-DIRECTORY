@@ -1,5 +1,4 @@
-# ACTIVE-DIRECTORY
-ENTERPRISE ACTIVE DIRECTORY LAB
+# ACTIVE DIRECTORY
 # Enterprise Active Directory Lab
 
 A fully functional enterprise-style Active Directory environment built from scratch in a virtualized home lab — designed to replicate the core infrastructure of a real corporate IT network.
