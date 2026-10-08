@@ -1,71 +1,161 @@
 # ACTIVE DIRECTORY
-# Enterprise Active Directory Lab
+# 🏢 Enterprise Active Directory Lab
 
-A fully functional enterprise-style Active Directory environment built from scratch in a virtualized home lab — designed to replicate the core infrastructure of a real corporate IT network.
+![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![Windows Server](https://img.shields.io/badge/Windows%20Server-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![VMware](https://img.shields.io/badge/VMware-607078?style=for-the-badge&logo=vmware&logoColor=white)
+![Active Directory](https://img.shields.io/badge/Active%20Directory-00188F?style=for-the-badge&logo=microsoft&logoColor=white)
+![Status](https://img.shields.io/badge/status-complete-brightgreen?style=for-the-badge)
+
+A fully functional enterprise-style Active Directory environment built from scratch in a virtualized home lab — replicating the core identity, network, and automation infrastructure found in a real corporate IT environment.
+
+> This is what your corporate IT environment looks like under the hood.
+
+---
+
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Repo Structure](#-repo-structure)
+- [Core Components](#-core-components)
+  - [Domain Controller](#1-domain-controller)
+  - [DHCP Server](#2-dhcp-server)
+  - [DNS Server](#3-dns-server)
+  - [NAT Routing (Dual-NIC)](#4-nat-routing-dual-nic)
+  - [Automated User Provisioning](#5-automated-user-provisioning)
+- [Script Usage](#-script-usage)
+- [Technologies Used](#-technologies-used)
+- [Screenshots](#-screenshots)
+- [Skills Demonstrated](#-skills-demonstrated)
+- [Future Improvements](#-future-improvements)
+- [License](#-license)
+- [Author](#-author)
+
+---
 
 ## 🏗️ Overview
 
-This project simulates a small-to-mid-size enterprise network, covering identity management, network services, and automated provisioning at scale. It was built to demonstrate hands-on, end-to-end infrastructure skills rather than isolated, single-purpose labs.
+This project simulates a small-to-mid-size enterprise network end-to-end — not just a single isolated service, but the full stack an IT/security admin would actually manage: identity, network services, routing, and automated provisioning at scale.
+
+**Highlights:**
+- Enterprise-grade Active Directory domain built from the ground up
+- Dual-NIC domain controller handling both internal services and edge routing
+- Fully automated bulk provisioning of 1,000 AD user accounts via PowerShell
+- Designed to mirror real-world corporate IT topology
+
+---
 
 ## ⚙️ Architecture
 
-- **Domain Controller** — Windows Server running Active Directory Domain Services (AD DS)
-- **Dual-NIC Configuration** — one interface bound to the internal LAN, the other handling NAT routing out to the internet
-- **DHCP Server** — automatic IP assignment and scope management for all domain-joined clients
-- **DNS Server** — internal name resolution supporting the AD domain
-- **NAT Routing** — Routing and Remote Access (RRAS) configured for internet access from the internal network
-- **Automated User Provisioning** — custom PowerShell script to bulk-create 1,000 Active Directory user accounts
+```
+                         Internet
+                             │
+                     [ NAT / RRAS ]
+                             │
+                ┌────────────────────────┐
+                │   Domain Controller     │
+                │  (Dual-NIC: LAN + WAN)  │
+                │                         │
+                │   ├── AD DS             │
+                │   ├── DNS               │
+                │   └── DHCP              │
+                └────────────────────────┘
+                             │
+                      [ Internal LAN ]
+                             │
+        ┌─────────────┬─────────────┬─────────────┐
+        │  Client VM  │  Client VM  │   ... x1000  │
+        │   (DHCP)    │   (DHCP)    │ provisioned  │
+        └─────────────┴─────────────┴─────────────┘
+```
 
-- # Enterprise Active Directory Lab
+---
 
-A fully functional enterprise-style Active Directory environment built from scratch in a virtualized home lab — designed to replicate the core infrastructure of a real corporate IT network.
+## 📁 Repo Structure
 
-## 🏗️ Overview
+```
+├── scripts/
+│   └── Create-BulkADUsers.ps1      # Bulk AD user provisioning script
+├── docs/
+│   └── ADUserCreation_Log.csv      # Sample output log from a provisioning run
+├── screenshots/
+│   ├── ad-users-and-computers.png
+│   ├── dhcp-scope.png
+│   ├── dns-zones.png
+│   └── script-output.png
+└── README.md
+```
 
-This project simulates a small-to-mid-size enterprise network, covering identity management, network services, and automated provisioning at scale. It was built to demonstrate hands-on, end-to-end infrastructure skills rather than isolated, single-purpose labs.
+> 📂 [`/scripts`](./scripts) · 📂 [`/docs`](./docs) · 📂 [`/screenshots`](./screenshots)
 
-## ⚙️ Architecture
+---
 
-- **Domain Controller** — Windows Server running Active Directory Domain Services (AD DS)
-- **Dual-NIC Configuration** — one interface bound to the internal LAN, the other handling NAT routing out to the internet
-- **DHCP Server** — automatic IP assignment and scope management for all domain-joined clients
-- **DNS Server** — internal name resolution supporting the AD domain
-- **NAT Routing** — Routing and Remote Access (RRAS) configured for internet access from the internal network
-- **Automated User Provisioning** — custom PowerShell script to bulk-create 1,000 Active Directory user accounts
+## 🧩 Core Components
 
-- 
-## 🚀 Features
+### 1. Domain Controller
+Windows Server configured as the forest/domain root with Active Directory Domain Services (AD DS). Hosts organizational units (OUs), group policy structure, and the primary identity store for the environment.
 
-- Full AD DS deployment with organizational units (OUs) and group policy structure
-- Dual-homed DC handling both internal services and edge routing/NAT
-- DHCP scope configured for automatic client onboarding
-- Internal DNS resolving domain resources
-- PowerShell automation script that generates 1,000 unique AD user accounts (names, usernames, OU placement, and group assignment) in a single run
+### 2. DHCP Server
+Configured with scoped IP ranges for automatic address assignment to all domain-joined clients, removing the need for manual IP configuration as the environment scales.
 
-## 🖥️ PowerShell User Provisioning Script
+### 3. DNS Server
+Internal DNS zone resolving AD domain resources, enabling clients and services to locate the domain controller and each other by name rather than static IP.
 
-Located in [`/scripts`](./scripts), this script:
-- Reads from a generated or provided list of user data (or generates it programmatically)
-- Creates AD user objects via `New-ADUser`
-- Assigns users to appropriate OUs and security groups
-- Sets initial passwords and enforces password-change-at-first-logon policy
-- Logs successes/failures for auditing
+### 4. NAT Routing (Dual-NIC)
+The domain controller is configured with two network interfaces — one bound to the internal LAN, the other handling NAT via Routing and Remote Access (RRAS) — giving the internal network outbound internet access while keeping it segmented from the external interface.
+
+### 5. Automated User Provisioning
+A custom PowerShell script ([`Create-BulkADUsers.ps1`](./scripts/Create-BulkADUsers.ps1)) that bulk-creates AD user accounts — generating unique usernames, assigning OU placement and group membership, setting initial passwords, enforcing password-change-at-first-logon, and logging every account created for auditing.
+
+---
+
+## 🖥️ Script Usage
 
 ```powershell
-# Example usage
-.\Create-BulkADUsers.ps1 -UserCount 1000 -OU "OU=Employees,DC=lab,DC=local"
+# Create 1,000 users in the Employees OU
+.\scripts\Create-BulkADUsers.ps1 -UserCount 1000 -OU "OU=Employees,DC=lab,DC=local"
+
+# Create 500 users, add them to a group, and pull names from a CSV
+.\scripts\Create-BulkADUsers.ps1 -UserCount 500 -OU "OU=Staff,DC=corp,DC=local" -Group "AllStaff" -NameListPath ".\names.csv"
+
+# Dry run (no changes made)
+.\scripts\Create-BulkADUsers.ps1 -UserCount 1000 -OU "OU=Employees,DC=lab,DC=local" -WhatIf
 ```
+
+Full parameter documentation is in the script's comment-based help — run:
+
+```powershell
+Get-Help .\scripts\Create-BulkADUsers.ps1 -Full
+```
+
+➡️ [View the script](./scripts/Create-BulkADUsers.ps1)
+
+---
 
 ## 🧰 Technologies Used
 
-- Windows Server (Active Directory Domain Services, DNS, DHCP, RRAS)
-- PowerShell (Active Directory module)
-- VMware Workstation/ESXi for virtualization
-- (Add: Windows client OS version, hypervisor version, etc. as applicable)
+| Category | Tools / Tech |
+|---|---|
+| OS / Platform | Windows Server, Windows 10/11 clients |
+| Virtualization | VMware Workstation / ESXi |
+| Directory Services | Active Directory Domain Services (AD DS) |
+| Networking | DHCP, DNS, RRAS (NAT routing), dual-NIC configuration |
+| Automation | PowerShell, Active Directory PowerShell module |
+
+---
 
 ## 📸 Screenshots
 
-_Add screenshots of AD Users and Computers, DHCP scope, DNS zones, and the PowerShell script output here._
+| Active Directory Users & Computers | DHCP Scope |
+|---|---|
+| ![AD Users](./screenshots/ad-users-and-computers.png) | ![DHCP Scope](./screenshots/dhcp-scope.png) |
+
+| DNS Zones | Script Output |
+|---|---|
+| ![DNS Zones](./screenshots/dns-zones.png) | ![Script Output](./screenshots/script-output.png) |
+
+---
 
 ## 🎯 Skills Demonstrated
 
@@ -73,7 +163,19 @@ _Add screenshots of AD Users and Computers, DHCP scope, DNS zones, and the Power
 - Network segmentation and routing (NAT, dual-NIC)
 - DHCP/DNS administration
 - Infrastructure automation and scripting at scale
-- Troubleshooting and systems administration in a Windows Server environment
+- Systems administration and troubleshooting in a Windows Server environment
+- Documentation and auditability practices (CSV logging, comment-based help)
+
+---
+
+## 🔭 Future Improvements
+
+- [ ] Add Group Policy Object (GPO) configuration and screenshots
+- [ ] Integrate a SIEM (Wazuh/Splunk) to monitor AD authentication events
+- [ ] Add a second DC for redundancy/replication testing
+- [ ] Script-based OU and GPO deployment (infrastructure-as-code style)
+
+---
 
 ## 📄 License
 
@@ -81,5 +183,5 @@ This project is for educational and portfolio purposes.
 
 ## 👤 Author
 
-**jameswood01**
-Cybersecurity & IT — [[GitHub Profile Link](https://github.com/jameswood-01/)]
+**Woody**
+Cybersecurity & IT — [GitHub Profile](#) · [LinkedIn](#)
