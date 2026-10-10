@@ -1,4 +1,3 @@
-# ACTIVE DIRECTORY
 # 🏢 Enterprise Active Directory Lab
 
 ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
@@ -49,25 +48,27 @@ This project simulates a small-to-mid-size enterprise network end-to-end — not
 ## ⚙️ Architecture
 
 ```
-                         Internet
-                             │
-                     [ NAT / RRAS ]
-                             │
-                ┌────────────────────────┐
-                │   Domain Controller     │
-                │  (Dual-NIC: LAN + WAN)  │
-                │                         │
-                │   ├── AD DS             │
-                │   ├── DNS               │
-                │   └── DHCP              │
-                └────────────────────────┘
-                             │
-                      [ Internal LAN ]
-                             │
-        ┌─────────────┬─────────────┬─────────────┐
-        │  Client VM  │  Client VM  │   ... x1000  │
-        │   (DHCP)    │   (DHCP)    │ provisioned  │
-        └─────────────┴─────────────┴─────────────┘
+                     Internet
+                        │
+                 [ NAT / RRAS ]
+                        │
+          ┌─────────────┴─────────────┐
+          │     Domain Controller     │
+          │  (Dual-NIC: LAN + WAN)    │
+          │                           │
+          │   ├── AD DS               │
+          │   ├── DNS                 │
+          │   └── DHCP                │
+          └─────────────┬─────────────┘
+                        │
+                 [ Internal LAN ]
+                        │
+          ┌─────────────┴─────────────┐
+          │   Domain-joined clients   │
+          │   (addresses via DHCP)    │
+          └───────────────────────────┘
+
+   AD DS: 1,000 user accounts provisioned by PowerShell
 ```
 
 ---
@@ -79,15 +80,10 @@ This project simulates a small-to-mid-size enterprise network end-to-end — not
 │   └── Create-BulkADUsers.ps1      # Bulk AD user provisioning script
 ├── docs/
 │   └── ADUserCreation_Log.csv      # Sample output log from a provisioning run
-├── screenshots/
-│   ├── ad-users-and-computers.png
-│   ├── dhcp-scope.png
-│   ├── dns-zones.png
-│   └── script-output.png
 └── README.md
 ```
 
-> 📂 [`/scripts`](./scripts) · 📂 [`/docs`](./docs) · 📂 [`/screenshots`](./screenshots)
+> 📂 [`/scripts`](./scripts) · 📂 [`/docs`](./docs)
 
 ---
 
@@ -123,6 +119,8 @@ A custom PowerShell script ([`Create-BulkADUsers.ps1`](./scripts/Create-BulkADUs
 .\scripts\Create-BulkADUsers.ps1 -UserCount 1000 -OU "OU=Employees,DC=lab,DC=local" -WhatIf
 ```
 
+**Requirements:** the ActiveDirectory PowerShell module (RSAT or run on the DC) and rights to create users in the target OU. The script prompts securely for the initial password, so it is never stored in the script or your shell history. Usernames are capped at AD's 20-character limit and made unique automatically.
+
 Full parameter documentation is in the script's comment-based help — run:
 
 ```powershell
@@ -147,13 +145,17 @@ Get-Help .\scripts\Create-BulkADUsers.ps1 -Full
 
 ## 📸 Screenshots
 
-| Active Directory Users & Computers | DHCP Scope |
-|---|---|
-| ![AD Users](./screenshots/ad-users-and-computers.png) | ![DHCP Scope](./screenshots/dhcp-scope.png) |
-
-| DNS Zones | Script Output |
-|---|---|
-| ![DNS Zones](./screenshots/dns-zones.png) | ![Script Output](./screenshots/script-output.png) |
+> 🚧 Screenshots coming soon. Once uploaded to a `screenshots/` folder, they'll appear here:
+>
+> ```markdown
+> | Active Directory Users & Computers | DHCP Scope |
+> |---|---|
+> | ![AD Users](./screenshots/ad-users-and-computers.png) | ![DHCP Scope](./screenshots/dhcp-scope.png) |
+>
+> | DNS Zones | Script Output |
+> |---|---|
+> | ![DNS Zones](./screenshots/dns-zones.png) | ![Script Output](./screenshots/script-output.png) |
+> ```
 
 ---
 
@@ -184,4 +186,4 @@ This project is for educational and portfolio purposes.
 ## 👤 Author
 
 **Woody**
-Cybersecurity & IT — [GitHub Profile](#) · [LinkedIn](#)
+Cybersecurity & IT — [GitHub Profile](https://github.com/jameswood-01)
