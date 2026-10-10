@@ -186,4 +186,4 @@ This project is for educational and portfolio purposes.
 ## 👤 Author
 
 **Woody**
-Cybersecurity & IT — [GitHub Profile](https://github.com/jameswood-01)
+Cybersecurity & IT — [GitHub Profile](https://github.com/jameswood-01) · [LinkedIn](https://www.linkedin.com/in/jamesmwood22/)
