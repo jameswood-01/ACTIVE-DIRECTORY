@@ -1,9 +1,9 @@
 # 🏢 Enterprise Active Directory Lab
 
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
-![Windows Server](https://img.shields.io/badge/Windows%20Server-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![VMware](https://img.shields.io/badge/VMware-607078?style=for-the-badge&logo=vmware&logoColor=white)
-![Active Directory](https://img.shields.io/badge/Active%20Directory-00188F?style=for-the-badge&logo=microsoft&logoColor=white)
+[![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
+[![Windows Server](https://img.shields.io/badge/Windows%20Server-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://learn.microsoft.com/en-us/windows-server/)
+[![VMware](https://img.shields.io/badge/VMware-607078?style=for-the-badge&logo=vmware&logoColor=white)](https://www.vmware.com/)
+[![Active Directory](https://img.shields.io/badge/Active%20Directory-00188F?style=for-the-badge&logo=microsoft&logoColor=white)](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview)
 ![Status](https://img.shields.io/badge/status-complete-brightgreen?style=for-the-badge)
 
 A fully functional enterprise-style Active Directory environment built from scratch in a virtualized home lab — replicating the core identity, network, and automation infrastructure found in a real corporate IT environment.
