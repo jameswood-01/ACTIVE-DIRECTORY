@@ -1,4 +1,4 @@
-   ![Banner](kql-threat-hunts-banner.png)
+![Banner](kql-threat-hunts-banner.png)
 # 🏢 Enterprise Active Directory Lab
 
 [![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
