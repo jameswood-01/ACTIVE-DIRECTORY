@@ -73,15 +73,6 @@ This project simulates a small-to-mid-size enterprise network end-to-end — not
 
 ---
 
-## 📁 Repo Structure
-
-```
-├── scripts/
-│   └── Create-BulkADUsers.ps1      # Bulk AD user provisioning script
-├── docs/
-│   └── ADUserCreation_Log.csv      # Sample output log from a provisioning run
-└── README.md
-```
 
 > 📂 [`/scripts`](./scripts) · 📂 [`/docs`](./docs)
 
