@@ -1,5 +1,4 @@
-![Banner](kql-threat-hunts-banner.png)
-# 🏢 Enterprise Active Directory Lab
+![Banner](active-directory-banner.png)
 
 [![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)](https://learn.microsoft.com/en-us/powershell/)
 [![Windows Server](https://img.shields.io/badge/Windows%20Server-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://learn.microsoft.com/en-us/windows-server/)
